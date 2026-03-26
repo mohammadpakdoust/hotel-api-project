@@ -58,7 +58,7 @@ To run this project on your local machine:
 
 1. **Clone the Repo**:
    ```bash
-   git clone <your-repo-url>
+   git clone https://github.com/mohammadpakdoust/hotel-api-project.git
    cd hotel-api-project
    ```
 2. **Install Dependencies**:
