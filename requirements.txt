@@ -5,3 +5,5 @@ sqlparse==0.5.5
 gunicorn==25.2.0
 pytz==2025.2
 requests==2.32.3
+psycopg2-binary
+dj-database-url
