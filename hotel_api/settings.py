@@ -57,6 +57,9 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'hotel_api.wsgi.application'
 
+if not DEBUG and not os.environ.get("DATABASE_URL"):
+    raise Exception("DATABASE_URL environment variable is missing in production! Data will be LOST if you use SQLite on Render/Railway.")
+
 DATABASES = {
     'default': dj_database_url.config(
         default=os.environ.get("DATABASE_URL", "sqlite:///db.sqlite3")
