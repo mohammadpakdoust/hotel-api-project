@@ -25,26 +25,31 @@ class ReservationSerializer(serializers.ModelSerializer):
             guests_data = validated_data.pop('guests')
             hotel_name = validated_data.pop('hotel_name')
             
-            # Get hotel by name, handle potential duplicates
+            # Step 1: Hotel Lookup
             hotel = Hotel.objects.filter(name=hotel_name).first()
             if not hotel:
                 raise serializers.ValidationError({"hotel_name": f"Hotel '{hotel_name}' not found."})
             
-            # Explicitly create reservation
+            # Step 2: Reservation Creation
             reservation = Reservation.objects.create(
                 hotel=hotel,
                 checkin=validated_data.get('checkin'),
                 checkout=validated_data.get('checkout')
             )
             
-            # Create and link guests
+            # Step 3: Guest Creation and Linking
             for guest_data in guests_data:
                 guest = Guest.objects.create(**guest_data)
                 reservation.guests.add(guest)
             
             return reservation
-        except serializers.ValidationError:
-            raise
         except Exception as e:
-            # Re-raise so it's caught as a ValidationError instead of 500
-            raise serializers.ValidationError({"detail": str(e)})
+            import traceback
+            # Force the error into a field called 'debug_error' which will be visible in the script output
+            error_details = {
+                "error": str(e),
+                "traceback": traceback.format_exc(),
+                "hotel_name": hotel_name if 'hotel_name' in locals() else "unknown",
+                "validated_data": str(validated_data)
+            }
+            raise serializers.ValidationError(error_details)
