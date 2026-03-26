@@ -9,6 +9,10 @@ wheels/
 # Virtual environments
 .venv
 
+# uv
+uv.lock
+.uv/
+
 # Database
 db.sqlite3
 
