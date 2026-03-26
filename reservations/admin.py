@@ -12,4 +12,3 @@ class GuestAdmin(admin.ModelAdmin):
 @admin.register(Reservation)
 class ReservationAdmin(admin.ModelAdmin):
     list_display = ('confirmation_number', 'hotel', 'checkin', 'checkout')
-    filter_horizontal = ('guests',)

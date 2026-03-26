@@ -28,3 +28,6 @@ Thumbs.db
 # Environment variables
 .env
 .env.*
+
+# Local tests
+reservations/test_api.py
