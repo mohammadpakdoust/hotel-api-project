@@ -6,3 +6,4 @@ gunicorn
 asgiref
 sqlparse
 pytz
+whitenoise
