@@ -11,7 +11,8 @@ DEBUG = False
 ALLOWED_HOSTS = ['*'] # OR os.environ.get('ALLOWED_HOSTS', '*').split(',')
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://web-production-a30b6.up.railway.app"
+    "https://web-production-a30b6.up.railway.app",
+    "https://hotel-api-project.onrender.com"
 ]
 
 INSTALLED_APPS = [
@@ -58,8 +59,7 @@ WSGI_APPLICATION = 'hotel_api.wsgi.application'
 
 DATABASES = {
     'default': dj_database_url.config(
-        default=os.environ.get("DATABASE_URL", "sqlite:///db.sqlite3"),
-        conn_max_age=600
+        default=os.environ.get("DATABASE_URL", "sqlite:///db.sqlite3")
     )
 }
 
