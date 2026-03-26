@@ -9,15 +9,19 @@ class GuestSerializer(serializers.ModelSerializer):
 
 
 class ReservationSerializer(serializers.ModelSerializer):
-    guests = GuestSerializer(many=True)
+    guests_list = GuestSerializer(many=True, source='guests')
+    hotel_name = serializers.CharField(write_only=True)
 
     class Meta:
         model = Reservation
-        fields = ['id', 'hotel', 'checkin', 'checkout', 'guests']
+        fields = ['hotel_name', 'checkin', 'checkout', 'guests_list']
 
     def create(self, validated_data):
         guests_data = validated_data.pop('guests')
-        reservation = Reservation.objects.create(**validated_data)
+        hotel_name = validated_data.pop('hotel_name')
+
+        hotel = Hotel.objects.get(name=hotel_name)
+        reservation = Reservation.objects.create(hotel=hotel, **validated_data)
 
         for guest in guests_data:
             Guest.objects.create(reservation=reservation, **guest)
