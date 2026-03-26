@@ -2,7 +2,7 @@ from rest_framework import generics
 from .models import Hotel, Reservation
 from .serializers import HotelSerializer, ReservationSerializer
 
-class HotelListCreateView(generics.ListCreateAPIView):
+class HotelListView(generics.ListCreateAPIView):
     queryset = Hotel.objects.all()
     serializer_class = HotelSerializer
 
