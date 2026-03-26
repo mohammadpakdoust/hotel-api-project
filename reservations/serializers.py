@@ -21,16 +21,29 @@ class ReservationSerializer(serializers.ModelSerializer):
         read_only_fields = ['confirmation_number']
 
     def create(self, validated_data):
-        guests_data = validated_data.pop('guests') # From source='guests'
-        hotel_name = validated_data.pop('hotel_name')
-        
-        # Get hotel by name as per requirement
-        hotel = Hotel.objects.get(name=hotel_name)
-        
-        reservation = Reservation.objects.create(hotel=hotel, **validated_data)
-        
-        for guest_data in guests_data:
-            guest = Guest.objects.create(**guest_data)
-            reservation.guests.add(guest)
+        print(f"Creating reservation for hotel: {validated_data.get('hotel_name')}")
+        try:
+            guests_data = validated_data.pop('guests')
+            hotel_name = validated_data.pop('hotel_name')
             
-        return reservation
+            # Get hotel by name as per requirement
+            try:
+                hotel = Hotel.objects.get(name=hotel_name)
+            except Hotel.DoesNotExist:
+                print(f"Hotel not found: {hotel_name}")
+                raise serializers.ValidationError({"hotel_name": f"Hotel with name '{hotel_name}' does not exist."})
+            
+            # Create reservation
+            reservation = Reservation.objects.create(hotel=hotel, **validated_data)
+            print(f"Reservation instance created: {reservation.id}")
+            
+            # Create and link guests
+            for guest_data in guests_data:
+                guest = Guest.objects.create(**guest_data)
+                reservation.guests.add(guest)
+            
+            print(f"Successfully created reservation {reservation.confirmation_number}")
+            return reservation
+        except Exception as e:
+            print(f"ERROR creating reservation: {str(e)}")
+            raise e
