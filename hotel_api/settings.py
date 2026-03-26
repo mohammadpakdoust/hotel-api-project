@@ -10,6 +10,10 @@ DEBUG = False
 
 ALLOWED_HOSTS = ['*'] # OR os.environ.get('ALLOWED_HOSTS', '*').split(',')
 
+CSRF_TRUSTED_ORIGINS = [
+    "https://web-production-a30b6.up.railway.app"
+]
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
