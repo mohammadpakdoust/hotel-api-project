@@ -75,13 +75,3 @@ To run this project on your local machine:
    ```
    The API will be available at `http://127.0.0.1:8000/api/`.
 
----
-
-## ✅ Grading Criteria Verification
-- **SDLC Process (20%)**: Clean, modular structure with Git version history.
-- **Documentation (20%)**: Comprehensive README (this file) with sample requests and credentials.
-- **Functionality (30%)**: Verified via Postman. Correct handling of all API requests/responses.
-- **Complexity (30%)**: 
-  - Dynamic availability filtering logic.
-  - One-to-many relationship (Guest $\to$ Reservation).
-  - Production PostgreSQL persistence with automated Render Blueprints.
