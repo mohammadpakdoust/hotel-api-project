@@ -11,3 +11,6 @@ def create_default_superuser(sender, **kwargs):
 class ReservationsConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
     name = 'reservations'
+
+    def ready(self):
+        post_migrate.connect(create_default_superuser, sender=self)
