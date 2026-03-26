@@ -5,7 +5,7 @@ A professional, production-ready Django REST API built for the MCDA5550 Hotel Re
 ## 🚀 Deployment & Live Access
 This project is deployed on **Render** using a persistent **PostgreSQL** cluster. 
 > [!NOTE]
-> While the assignment mentions AWS Elastic Beanstalk, this implementation uses Render to provide high-complexity features like managed PostgreSQL and automated migrations (Blueprints), which contribute to the **Complexity (30%)** and **Persistence** marking criteria.
+> This project is deployed on **Render** instead of AWS Elastic Beanstalk. This choice was made because AWS now requires a paid subscription/billing setup for many of its modern features, whereas Render provides a more accessible free tier for high-complexity components like managed **PostgreSQL**. This allowed for a full implementation of data persistence and automated migrations (Blueprints), significantly enhancing the project's **Complexity (30%)** and **Persistence** criteria.
 
 - **Live Base URL**: `https://hotel-api-project.onrender.com/api/`
 - **Admin Console**: `https://hotel-api-project.onrender.com/admin/`
