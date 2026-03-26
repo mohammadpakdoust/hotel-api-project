@@ -8,7 +8,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-default-key-for-dev-o
 
 DEBUG = False
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['*'] # OR os.environ.get('ALLOWED_HOSTS', '*').split(',')
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -54,7 +54,8 @@ WSGI_APPLICATION = 'hotel_api.wsgi.application'
 
 DATABASES = {
     'default': dj_database_url.config(
-        default=os.environ.get("DATABASE_URL")
+        default=os.environ.get("DATABASE_URL", "sqlite:///db.sqlite3"),
+        conn_max_age=600
     )
 }
 
