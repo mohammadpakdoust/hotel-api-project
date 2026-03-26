@@ -25,10 +25,12 @@ class ReservationSerializer(serializers.ModelSerializer):
             guests_data = validated_data.pop('guests')
             hotel_name = validated_data.pop('hotel_name')
             
-            # Get hotel by name
-            hotel = Hotel.objects.get(name=hotel_name)
+            # Get hotel by name, handle potential duplicates
+            hotel = Hotel.objects.filter(name=hotel_name).first()
+            if not hotel:
+                raise serializers.ValidationError({"hotel_name": f"Hotel '{hotel_name}' not found."})
             
-            # Explicitly create reservation to avoid any unexpected keys in validated_data
+            # Explicitly create reservation
             reservation = Reservation.objects.create(
                 hotel=hotel,
                 checkin=validated_data.get('checkin'),
@@ -41,8 +43,8 @@ class ReservationSerializer(serializers.ModelSerializer):
                 reservation.guests.add(guest)
             
             return reservation
-        except Hotel.DoesNotExist:
-            raise serializers.ValidationError({"hotel_name": f"Hotel '{hotel_name}' not found."})
+        except serializers.ValidationError:
+            raise
         except Exception as e:
-            # Re-raise so it's caught by gunicorn/logging but with a cleaner stack
+            # Re-raise so it's caught as a ValidationError instead of 500
             raise serializers.ValidationError({"detail": str(e)})
