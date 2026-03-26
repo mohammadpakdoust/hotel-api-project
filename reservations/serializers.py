@@ -12,7 +12,7 @@ class GuestSerializer(serializers.ModelSerializer):
         fields = ['guest_name', 'gender']
 
 class ReservationSerializer(serializers.ModelSerializer):
-    guests_list = GuestSerializer(many=True, source='guests')
+    guests_list = GuestSerializer(many=True)
     hotel_name = serializers.CharField(write_only=True)
 
     class Meta:
@@ -21,7 +21,7 @@ class ReservationSerializer(serializers.ModelSerializer):
         read_only_fields = ['confirmation_number']
 
     def create(self, validated_data):
-        guests_data = validated_data.pop('guests', [])
+        guests_data = validated_data.pop('guests_list', [])
         hotel_name = validated_data.pop('hotel_name')
         
         # Get hotel
@@ -36,14 +36,14 @@ class ReservationSerializer(serializers.ModelSerializer):
             checkout=validated_data.get('checkout')
         )
         
-        # Create guests
-        guest_objs = []
+        # Create guests attached to this reservation
         for guest_data in guests_data:
-            guest = Guest.objects.create(**guest_data)
-            guest_objs.append(guest)
-        
-        # Link guests
-        if guest_objs:
-            reservation.guests.set(guest_objs)
+            Guest.objects.create(reservation=reservation, **guest_data)
             
         return reservation
+
+    def to_representation(self, instance):
+        # Strictly return ONLY confirmation_number in the response
+        return {
+            "confirmation_number": str(instance.confirmation_number)
+        }
