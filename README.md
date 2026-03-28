@@ -7,6 +7,9 @@ This project is deployed on **Render** using a persistent **PostgreSQL** cluster
 > [!NOTE]
 > This project is deployed on **Render** instead of AWS Elastic Beanstalk. This choice was made because AWS now requires a paid subscription/billing setup for many of its modern features, whereas Render provides a more accessible free tier for high-complexity components like managed **PostgreSQL**. This allowed for a full implementation of data persistence and automated migrations (Blueprints), significantly enhancing the project's **Complexity (30%)** and **Persistence** criteria.
 
+> [!IMPORTANT]
+> **Wake-up Note:** Since this project is hosted on Render's **Free Tier**, the web service will "spin down" after a period of inactivity. If you are accessing the API or running tests (GET/POST) for the first time or after a period of inactivity, it may take **~1 minute** for the service to "wake up." Please visit the [Live Base URL](https://hotel-api-project.onrender.com/api/hotels/) in your browser first to ensure the service is active before running any API tests.
+
 - **Live Base URL**: `https://hotel-api-project.onrender.com/api/`
 - **Admin Console**: `https://hotel-api-project.onrender.com/admin/`
 - **Credentials**: Username: `admin` | Password: `admin123`
