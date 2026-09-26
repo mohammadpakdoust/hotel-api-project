@@ -1,40 +1,33 @@
-# Hotel Reservation API (MCDA5550)
+# Hotel Reservation REST API
 
-A professional, production-ready Django REST API built for the MCDA5550 Hotel Reservation System project.
+A Django REST API for hotel availability and reservation workflows, with PostgreSQL persistence and a live deployment on Render.
 
-## 🚀 Deployment & Live Access
-This project is deployed on **Render** using a persistent **PostgreSQL** cluster. 
-> [!NOTE]
-> This project is deployed on **Render** instead of AWS Elastic Beanstalk. This choice was made because AWS now requires a paid subscription/billing setup for many of its modern features, whereas Render provides a more accessible free tier for high-complexity components like managed **PostgreSQL**. This allowed for a full implementation of data persistence and automated migrations (Blueprints), significantly enhancing the project's **Complexity (30%)** and **Persistence** criteria.
+## Live deployment
 
-> [!IMPORTANT]
-> **Wake-up Note:** Since this project is hosted on Render's **Free Tier**, the web service will "spin down" after a period of inactivity. If you are accessing the API or running tests (GET/POST) for the first time or after a period of inactivity, it may take **~1 minute** for the service to "wake up." Please visit the [Live Base URL](https://hotel-api-project.onrender.com/api/hotels/) in your browser first to ensure the service is active before running any API tests.
+- **Base API:** https://hotel-api-project.onrender.com/api/
+- **Hotels endpoint:** https://hotel-api-project.onrender.com/api/hotels/
 
-- **Live Base URL**: `https://hotel-api-project.onrender.com/api/`
-- **Admin Console**: `https://hotel-api-project.onrender.com/admin/`
-- **Credentials**: Username: `admin` | Password: `admin123`
+> The service may take a short time to wake after inactivity when running on a free hosting tier.
 
----
+## API
 
-## 📖 API Documentation
+### List available hotels
 
-### 🏨 1. getListOfHotels
-**Method:** `GET /hotels/`  
-**Description:** Returns the list of hotels. The list dynamically changes based on `checkin` and `checkout` query parameters to exclude hotels that are at full capacity during that period.
-
-**Sample Request:**
-```bash
-# Get hotels available for specific dates
-curl -X GET "https://hotel-api-project.onrender.com/api/hotels/?checkin=2026-05-15&checkout=2026-05-20"
+```http
+GET /api/hotels/?checkin=2026-05-15&checkout=2026-05-20
 ```
 
----
+The endpoint returns hotels with availability for the requested date range.
 
-### 📅 2. reservationConfirmation
-**Method:** `POST /reservation/`  
-**Description:** Creates a hotel reservation and returns a confirmation number. The request payload allows for a nested `guests_list`. Each guest is stored as a related entity (ForeignKey) tied to the specific reservation.
+### Create a reservation
 
-**Input Payload:**
+```http
+POST /api/reservation/
+Content-Type: application/json
+```
+
+Example payload:
+
 ```json
 {
   "hotel_name": "Seaside Resort",
@@ -47,34 +40,42 @@ curl -X GET "https://hotel-api-project.onrender.com/api/hotels/?checkin=2026-05-
 }
 ```
 
-**Response:**
+Example response:
+
 ```json
 {
   "confirmation_number": "3e7d79b9-a5b5-4539-9933-dc1f0eb112da"
 }
 ```
 
----
+## Tech stack
 
-## 🛠 Local Setup & Execution
-To run this project on your local machine:
+- Python
+- Django
+- Django REST Framework
+- PostgreSQL
+- Render
 
-1. **Clone the Repo**:
-   ```bash
-   git clone https://github.com/mohammadpakdoust/hotel-api-project.git
-   cd hotel-api-project
-   ```
-2. **Install Dependencies**:
-   ```bash
-   pip install -r requirements.txt
-   ```
-3. **Run Migrations**:
-   ```bash
-   python manage.py migrate
-   ```
-4. **Start the Server**:
-   ```bash
-   python manage.py runserver
-   ```
-   The API will be available at `http://127.0.0.1:8000/api/`.
+## Run locally
 
+```bash
+git clone https://github.com/mohammadpakdoust/hotel-api-project.git
+cd hotel-api-project
+pip install -r requirements.txt
+python manage.py migrate
+python manage.py runserver
+```
+
+The API will be available at:
+
+```text
+http://127.0.0.1:8000/api/
+```
+
+## Security note
+
+Administrative credentials are intentionally **not** published in this repository. Configure privileged access through environment-specific secrets and deployment settings.
+
+## Background
+
+Originally developed for MCDA coursework at Saint Mary's University and presented here as a backend/API portfolio project.
